@@ -122,13 +122,29 @@ void drawFrame(SDL_Surface* screen, CircleList* list) {
 		updateCircle(current->circle);
 	}
 }
+
+int handleEvents(CircleList* list) {
+	SDL_Event event;
+	while(SDL_PollEvent(&event)) {
+		switch(event.type) {
+			case SDL_QUIT:
+				return 1;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				newCircle(list, event.button.x, event.button.y);
+				break;
+		}
+	}
+	return 0;
+}
+
 #define FPS 60
 
 int main (int argc, char** argv) {
 	SDL_Surface *screen;
 	FPSmanager fpsm;
 	CircleList* list;
-	long i;
+	int stopping = 0;
 
 	SDL_Init(SDL_INIT_VIDEO);
 	list = initializeCircleList();
@@ -137,11 +153,9 @@ int main (int argc, char** argv) {
 	SDL_initFramerate(&fpsm);
 	SDL_setFramerate(&fpsm, FPS);
 
-	newCircle(list, 14, 32);
-	newCircle(list, 340, 98);
-	newCircle(list, 160, 400);
-
-	for(i=0; i <= FPS * 30; i++) {
+	while (1) {
+		if (handleEvents(list)) /* handleEvents returns something other than 0 when we should shutdown */
+			break;
 		drawFrame(screen, list);
 		SDL_Flip(screen);
 		SDL_framerateDelay(&fpsm);
