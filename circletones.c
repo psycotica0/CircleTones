@@ -13,7 +13,6 @@ typedef struct Circle {
 	int borderWidth;
 	int rate;
 	Uint32 borderColour;
-	Uint32 fillColour;
 } Circle;
 
 typedef struct CircleNode {
@@ -45,8 +44,7 @@ CircleNode* newCircle(CircleList* list, int x, int y) {
 	temp->circle->rate = 1;
 	temp->circle->radius = 1;
 	temp->circle->borderWidth = 2;
-	temp->circle->borderColour = 0x000000FF;
-	temp->circle->fillColour = 0xAA00AAFF;
+	temp->circle->borderColour = 0xFFFFFFFF;
 
 	temp->next = list->head;
 	list->head = temp;
@@ -98,11 +96,7 @@ void doRebound(Circle* current) {
 }
 
 void drawCircle(SDL_Surface* screen, Circle* circle) {
-	/* Border */
-	if (circle->borderWidth > 0)
-		filledCircleColor(screen, circle->x, circle->y, circle->radius + circle->borderWidth, circle->borderColour);
-	/* Fill */
-	filledCircleColor(screen, circle->x, circle->y, circle->radius, circle->fillColour);
+	aacircleColor(screen, circle->x, circle->y, circle->radius, circle->borderColour);
 }
 
 void updateCircle(Circle* circle) {
