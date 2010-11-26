@@ -147,6 +147,8 @@ int main (int argc, char** argv) {
 	SDL_initFramerate(&fpsm);
 	SDL_setFramerate(&fpsm, FPS);
 
+	SDL_WM_SetCaption("CircleTones", NULL);
+
 	while (1) {
 		if (handleEvents(list)) /* handleEvents returns something other than 0 when we should shutdown */
 			break;
