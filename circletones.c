@@ -25,33 +25,46 @@ typedef struct CircleList {
 	struct CircleNode* head;
 } CircleList;
 
-CircleNode* newCircle(CircleList* list, int x, int y) {
-	CircleNode* temp;
+Circle* newCircle(int x, int y) {
+	Circle* temp;
 
-	temp = malloc(sizeof(CircleNode));
-	if (temp == NULL)
-		return NULL;
-
-	temp->circle = malloc(sizeof(Circle));
-	if (temp->circle == NULL) {
+	temp = malloc(sizeof(Circle));
+	if (temp == NULL) {
 		free(temp);
 		return NULL;
 	}
 
-	temp->circle->x = x;
-	temp->circle->y = y;
+	temp->x = x;
+	temp->y = y;
 
-	temp->circle->rate = 1;
-	temp->circle->radius = 1;
-	temp->circle->borderWidth = 2;
-	temp->circle->borderColour = 0xFFFFFFFF;
+	temp->rate = 1;
+	temp->radius = 1;
+	temp->borderWidth = 2;
+	temp->borderColour = 0xFFFFFFFF;
 
-	temp->next = list->head;
-	list->head = temp;
+	return temp;
+}
+
+/* This function puts the given circle into a node into the list and returns the circle again */
+Circle* pushCircle(CircleList* list, Circle* circle) {
+	CircleNode* node;
+
+	if (circle == NULL)
+		return NULL;
+
+	node = malloc(sizeof(CircleNode));
+
+	if (node == NULL)
+		return NULL;
+
+	node->circle = circle;
+
+	node->next = list->head;
+	list->head = node;
 
 	list->size++;
 
-	return temp;
+	return circle;
 }
 
 CircleList* newCircleList() {
@@ -125,7 +138,7 @@ int handleEvents(CircleList* list) {
 				return 1;
 				break;
 			case SDL_MOUSEBUTTONDOWN:
-				newCircle(list, event.button.x, event.button.y);
+				pushCircle(list, newCircle(event.button.x, event.button.y));
 				break;
 		}
 	}
