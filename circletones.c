@@ -54,7 +54,7 @@ CircleNode* newCircle(CircleList* list, int x, int y) {
 	return temp;
 }
 
-CircleList* initializeCircleList() {
+CircleList* newCircleList() {
 	CircleList* temp;
 
 	temp = malloc(sizeof(CircleList));
@@ -141,7 +141,7 @@ int main (int argc, char** argv) {
 	int stopping = 0;
 
 	SDL_Init(SDL_INIT_VIDEO);
-	list = initializeCircleList();
+	list = newCircleList();
 
 	screen = SDL_SetVideoMode(640, 480, 32, SDL_SWSURFACE | SDL_DOUBLEBUF);
 	SDL_initFramerate(&fpsm);
